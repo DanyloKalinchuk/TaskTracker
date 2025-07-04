@@ -1,6 +1,6 @@
 # TaskTracker
 c++ app for task tracking
-https://github.com/DanyloKalinchuk/TaskTracker
+[https://github.com/DanyloKalinchuk/TaskTracker](https://roadmap.sh/projects/task-tracker)
 
 # Requirements
 - CMake 3.10 or higher
