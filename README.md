@@ -18,5 +18,5 @@ c++ app for task tracking
 `make`
 
 # Usage
-While the build folder use `.\TaslTracker` app name.  
+While in the build folder use `.\TaslTracker` as the app name.  
 Print `.\Tasktracker help` to see the list of commands.
