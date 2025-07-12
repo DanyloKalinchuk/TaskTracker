@@ -16,7 +16,7 @@ add_executable(TaskTracker
     src/task/main_task/task.cpp 
     src/task/tasks_list/tasks_list.cpp 
     src/controls/controls.cpp 
-    src/exception_handling/exceptions.cpp 
+    src/cmd/cmd.cpp
     src/in_out/in_out.cpp
 )
 
