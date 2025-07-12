@@ -4,7 +4,7 @@ c++ app for task tracking
 
 # Requirements
 - CMake 3.10 or higher
-- vcpkg
+- vcpkg (with jsoncpp installed)
 
 # Building
 - clone repository  
