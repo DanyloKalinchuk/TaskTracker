@@ -21,25 +21,11 @@ void Tasks_List::add_task(const std::string& description){
 }
 
 void Tasks_List::del_task(const int& id){
-    try{
-        if (this->tasks.size() <= id || this->tasks[id] == nullptr){
-            throw std::invalid_argument("Invalid Id value");
-        }else{
-            this->tasks[id] = nullptr;
-            this->unused_ids.insert(id);
-        }
+    if (this->tasks.size() <= id || this->tasks[id] == nullptr){
+        throw std::invalid_argument("Invalid task id value!");
     }
-    catch (std::invalid_argument e){
-        std::cerr << e.what() << "\n" <<
-        "Valid id values: \n";
-
-        for (const auto& task : this->tasks){
-            if (task != nullptr){
-                std::cerr << "\t Id:" << task->get_id() << " " <<
-                "Description: " << task->get_description() << "\n";
-            }
-        }
-    }
+    this->tasks[id] = nullptr;
+    this->unused_ids.insert(id);
 }
 
 void Tasks_List::push_to_unused_ids(const int& id){

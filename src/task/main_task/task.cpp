@@ -28,26 +28,12 @@ void Task::add_sub_task(const std::string& description){
 }
 
 void Task::del_sub_task(const int& id){
-    try{
-        if (this->sub_tasks.size() <= id || this->sub_tasks[id] == nullptr){
-            throw id;
-        }else{
-            this->sub_tasks[id] = nullptr;
-            this->unused_ids.insert(id);
-        }
+    if (this->sub_tasks.size() <= id || this->sub_tasks[id] == nullptr){
+        throw std::invalid_argument("Invalid sub-task id value!");
     }
-    catch (const int& user_input){
-        std::cerr << "Invalid id value \n" <<
-        "Provided value is: " << user_input << "\n" <<
-        "Valid id values: \n";
+    this->sub_tasks[id] = nullptr;
+    this->unused_ids.insert(id);
 
-        for (const auto& sub_task : this->sub_tasks){
-            if (sub_task != nullptr){
-                std::cerr << "\t Id:" << sub_task->get_id() << " " <<
-                "Description: " << sub_task->get_description() << "\n";
-            }
-        }
-    }
 }
 
 std::vector<int> Task::ids_by_status(sts::Status& status){

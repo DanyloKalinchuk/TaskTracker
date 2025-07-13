@@ -4,16 +4,16 @@ void info::print_sub_task_info(std::unique_ptr<Base_Task>&sub_task){
     std::cout << "\tId: " << sub_task->get_id() << "\n" <<
     "\tDescription: " << sub_task->get_description() << "\n" <<
     "\tStatus: " << sts::status_to_string.at(sub_task->get_status()) << "\n" <<
-    "\tCreation Date: " << sub_task->get_creation_date() << "\n" <<
-    "\tLast Update: " << sub_task->get_last_update() << "\n";
+    "\tCreation Date: " << sub_task->get_creation_date() <<
+    "\tLast Update: " << sub_task->get_last_update();
 }
 
 void info::print_task_info(std::unique_ptr<Task>& task){
     std::cout << "\tId: " << task->get_id() << "\n" <<
     "\tDescription: " << task->get_description() << "\n" <<
     "\tStatus: " << sts::status_to_string.at(task->get_status()) << "\n" <<
-    "\tCreation Date: " << task->get_creation_date() << "\n" <<
-    "\tLast Update: " << task->get_last_update() << "\n\t";
+    "\tCreation Date: " << task->get_creation_date() <<
+    "\tLast Update: " << task->get_last_update() << "\t";
     info::print_sub_tasks_list(task);    
 }
 
