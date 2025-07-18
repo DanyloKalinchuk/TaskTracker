@@ -9,7 +9,8 @@ Task::Task(const int& id, const std::string& description, const std::string& cre
 void Task::add_sub_task(const std::string& description){
     int sub_id;
     if (this->unused_ids.size() == 0){
-        sub_id = this->sub_tasks.size();
+        sub_id = this->next_id;
+        this->next_id++;
     }else{
         auto it = this->unused_ids.begin();
         sub_id = *it;
@@ -17,41 +18,36 @@ void Task::add_sub_task(const std::string& description){
     }
 
     std::unique_ptr<Base_Task> sub_task = std::make_unique<Base_Task>(sub_id, description);
-
-    if (sub_id == this->sub_tasks.size()){
-        this->sub_tasks.push_back(std::move(sub_task));
-    }else{
-        this->sub_tasks[sub_id] = std::move(sub_task);
-    }
+    this->sub_tasks[sub_id] = std::move(sub_task);
     
     this->update_last_update();
 }
 
 void Task::del_sub_task(const int& id){
-    if (this->sub_tasks.size() <= id || this->sub_tasks[id] == nullptr){
+    if (this->sub_tasks.find(id) == this->sub_tasks.end()){
         throw std::invalid_argument("Invalid sub-task id value!");
     }
-    this->sub_tasks[id] = nullptr;
+    this->sub_tasks.erase(id);
     this->unused_ids.insert(id);
 
 }
 
 std::vector<int> Task::ids_by_status(sts::Status& status){
     std::vector<int> list;
-    for (const auto& sub_task : this->sub_tasks){
-        if (sub_task != nullptr && sub_task->get_status() == status){
+    for (const auto& [id, sub_task] : this->sub_tasks){
+        if (sub_task->get_status() == status){
             list.push_back(sub_task->get_id());
         }
     }
     return list;
 }
 
-std::vector<std::unique_ptr<Base_Task>>& Task::get_sub_tasks(){
+std::map<int, std::unique_ptr<Base_Task>>& Task::get_sub_tasks(){
     return this->sub_tasks;
 }
 
 bool Task::sub_tasks_empty(){
-    if (this->unused_ids.size() == this->sub_tasks.size()){
+    if (this->sub_tasks.size() == 0){
         return true;
     }
     return false;
@@ -69,10 +65,8 @@ Json::Value Task::to_json() const{
     Json::Value root = Base_Task::to_json();
 
     Json::Value sub_tasks_arr(Json::arrayValue);
-    for (const auto& sub_task : this->sub_tasks){
-        if (sub_task != nullptr){
-            sub_tasks_arr.append(sub_task->to_json());
-        }
+    for (const auto& [id, sub_task] : this->sub_tasks){
+        sub_tasks_arr.append(sub_task->to_json());
     }
     root["sub_tasks"] = sub_tasks_arr;
 
@@ -81,6 +75,7 @@ Json::Value Task::to_json() const{
         ununsed_ids_arr.append(id);
     }
     root["unused_ids"] = ununsed_ids_arr;
+    root["next_id"] = this->next_id;
 
     return root;
 }
@@ -91,13 +86,11 @@ void Task::from_json(const Json::Value& root){
 
     for (const auto& sub_task_json : root["sub_tasks"]){
         std::unique_ptr<Base_Task> sub_task = Base_Task::from_json(sub_task_json);
-        while(this->sub_tasks.size() <= sub_task->get_id()){
-            this->sub_tasks.push_back(nullptr);
-        }
         this->sub_tasks[sub_task->get_id()] = std::move(sub_task);
     }
 
     for (const auto& id_json : root["unused_ids"]){
         this->unused_ids.insert(id_json.asInt());
     }
+    this->next_id = root["next_id"].asInt();
 }

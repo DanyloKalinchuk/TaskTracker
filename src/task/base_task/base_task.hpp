@@ -3,7 +3,7 @@
 #include <json/json.h>
 #include <iostream>
 #include <vector>
-#include <unordered_map>
+#include <map>
 #include <string>
 #include <ctime>
 
@@ -14,8 +14,8 @@ namespace sts{
         done
     };
 
-    extern const std::unordered_map<Status, std::string> status_to_string;
-    extern const std::unordered_map<std::string, Status> string_to_status;
+    extern const std::map<Status, std::string> status_to_string;
+    extern const std::map<std::string, Status> string_to_status;
 };
 
 class Base_Task{
