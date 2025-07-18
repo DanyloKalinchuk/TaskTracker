@@ -5,8 +5,9 @@
 #include "../base_task/base_task.hpp"
 
 class Task : public Base_Task{
-    std::vector<std::unique_ptr<Base_Task>> sub_tasks;
+    std::map<int, std::unique_ptr<Base_Task>> sub_tasks;
     std::set<int> unused_ids;
+    int next_id = 0;
 
     public:
     Task(const int&, const std::string&);
@@ -16,7 +17,7 @@ class Task : public Base_Task{
     void del_sub_task(const int&);
 
     std::vector<int> ids_by_status(sts::Status&);
-    std::vector<std::unique_ptr<Base_Task>>& get_sub_tasks();
+    std::map<int, std::unique_ptr<Base_Task>>& get_sub_tasks();
     bool sub_tasks_empty();
 
     void update_sub_tasks_description(const int&, const std::string&);

@@ -14,16 +14,13 @@ Tasks_List json_handler::read(){
                     task_json["description"].asString(), task_json["creation_date"].asString());
 
                 task->from_json(task_json);
-
-                if (tasks.get_tasks().size() <= task->get_id()){
-                    tasks.get_tasks().resize(task->get_id() + 1);
-                }
                 tasks.get_tasks()[task->get_id()] = std::move(task);
             }
 
             for (const auto& id_json : root["unused_ids"]){
                 tasks.push_to_unused_ids(id_json.asInt());
             }
+            tasks.set_next_id(root["next_id"].asInt());
         }
         input.close();
     }
@@ -35,10 +32,8 @@ void json_handler::write(Tasks_List& tasks){
     Json::Value root;
 
     Json::Value tasks_json(Json::arrayValue);
-    for (const auto& task : tasks.get_tasks()){
-        if (task != nullptr){
-            tasks_json.append(task->to_json());
-        }
+    for (const auto& [id, task] : tasks.get_tasks()){
+        tasks_json.append(task->to_json());
     }
     root["tasks"] = tasks_json;
 
@@ -47,6 +42,7 @@ void json_handler::write(Tasks_List& tasks){
         unused_ids_json.append(id);
     }
     root["unused_ids"] = unused_ids_json;
+    root["next_id"] = tasks.get_next_id();
 
     std::ofstream output("tasks.json");
     output << root;

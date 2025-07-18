@@ -1,12 +1,12 @@
 #include "base_task.hpp"
 
-const std::unordered_map<sts::Status, std::string> sts::status_to_string = {
+const std::map<sts::Status, std::string> sts::status_to_string = {
     {Status::to_do, "to_do"},
     {Status::in_progress, "in_progress"},
     {Status::done, "done"}    
 };
 
-const std::unordered_map<std::string, sts::Status> sts::string_to_status = {
+const std::map<std::string, sts::Status> sts::string_to_status = {
     {"to_do", Status::to_do},
     {"in_progress", Status::in_progress},
     {"done", Status::done}    

@@ -23,11 +23,9 @@ void info::print_sub_tasks_list(std::unique_ptr<Task>& task){
     if (task->sub_tasks_empty()){
         std::cout << "\t\tThere are no sub-tasks \n";
     }else{
-        for (const auto& sub_task : task->get_sub_tasks()){
-            if (sub_task != nullptr){
-                std::cout << "\t\tId: " << sub_task->get_id() <<
-                " Description: " << sub_task->get_description() << "\n";
-            }
+        for (const auto& [id, sub_task] : task->get_sub_tasks()){
+            std::cout << "\t\tId: " << sub_task->get_id() <<
+            " Description: " << sub_task->get_description() << "\n";
         }
     }
 }
@@ -53,11 +51,9 @@ void info::print_tasks_list(Tasks_List& tasks){
     if (tasks.empty()){
         std::cout << "\tThere are no tasks \n";
     }else{
-        for (const auto& task : tasks.get_tasks()){
-            if (task != nullptr){
-                std::cout << "\tId: " << task->get_id() <<
-                " Description: " << task->get_description() << "\n";
-            }
+        for (const auto& [id, task] : tasks.get_tasks()){
+            std::cout << "\tId: " << task->get_id() <<
+            " Description: " << task->get_description() << "\n";
         }
     }
 }
